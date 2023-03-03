@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Hospitals</title>
+
+    <style>
+
+
+        .card {
+            text-align: center;
+            width: 300px;
+            height: 200px;
+            background-color: #0e0e0e;
+            text-align: center;
+            border: 10px solid #0e0d0d;
+            border-radius: 20px;
+            box-shadow: inset 5px 5px 10px #171616, inset -5px -5px 10px #140117;
+            transition: 0.5s;
+        }
+
+        .card:hover {
+
+            height: 380px;
+        }
+
+        .icon {
+
+            width: 60px;
+            height: 60px;
+            color: #0e0d0d;
+            font-size: 30px;
+            background-color: #100e0e;
+            margin: 20px auto;
+            padding: 5px;
+            border-radius: 80%;
+            box-shadow: 8px 8px 10px #dc1717, -8px -8px 10px rgb(14, 57, 229);
+        }
+
+        .content {
+            color: #0ecb97;
+            background-color: #0e0d0d;
+            padding: 10px;
+            margin: 5px 20px;
+            border-radius: 8px;
+            box-shadow: 8px 8px 10px #ef0f0f, -8px -8px 10px #2470a8;
+            transform: translateY(-80px) scale(0);
+            transition: all 0.5s;
+        }
+
+        .card:hover .content {
+            transform: translateY(0) scale(1)
+        }
+
+        .content h3 {
+
+            text-shadow: 2px 2px 0px #be0c0c;
+        }
+
+        button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            color: #0d0e0e;
+            background-color: #111111;
+            border-style: solid;
+            border-width: 2px 2px 2px 2px;
+            border-color: rgb(5, 4, 4);
+            border-radius: 40px 40px 40px 40px;
+            padding: 16px 24px 16px 28px;
+            transform: translate(0px, 0px) rotate(0deg);
+            transition: 0.2s;
+            box-shadow: -4px -2px 16px 0px #ffffff, 4px 2px 16px 0px rgb(16, 13, 13);
+        }
+
+        button:hover {
+            color: #100d0d;
+            background-color: #E5EDF5;
+            box-shadow: -2px -1px 8px 0px #ffffff, 2px 1px 8px 0px rgba(20, 20, 21, 0.48);
+        }
+
+        button:active {
+            box-shadow: none;
+        }
+
+
+    </style>
+</head>
+<body>
+<tr  th:each="doctor:${doctors}">
+    <div style="text-align: center" class="card">
+        <div class="icon">
+        </div>
+
+        <div class="content">
+           <div><h9>Id:</h9> <td th:text="${doctor.id}">ID</td> </div>
+            <div><h9>FirstName:</h9> <td th:text="${doctor.firstName}">FirstName</td></div>
+            <div ><h9>LastName:</h9> <td th:text="${doctor.lastName}">LastName</td></div>
+            <div><h9>Position:</h9> <td th:text="${doctor.position}">Position</td></div>
+            <div><h9>Email:</h9> <td th:text="${doctor.email}">Email</td></div>
+
+            <div><td> <a th:method="DELETE" th:href="@{/{id}/doctors/{doctorId}/updateDoctor(doctorId=${doctor.id},id=${hospital})}">
+                <button>Update</button>
+            </a><td> <a th:method="DELETE" th:href="@{/{id}/doctors/{doctorId}/deleteDoctor(doctorId=${doctor.id},id=${hospital})}">
+                <button>Delete</button>
+            </a></div>
+
+            <td>
+                <form th:method="POST"
+                      th:action="@{/{doctorId}/assignDepartment(doctorId=${doctor.getId()})}">
+                    <select name="instructor" class="form-select form-select-sm" aria-label=".form-select-sm example"
+                            th:object="${department}" th:field="*{id}">
+                        <option th:each="department:${departments}"
+                                th:value="${department.id}"
+                                th:text="${department.name}"></option>
+                    </select>
+                    <input type="submit" value="submit"/>
+                </form>
+            </td>
+
+
+        </div>
+
+
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+</tr>
+
+
+<div style="text-align: center"><td> <a th:method="Add" th:href="@{/{id}/doctors/addDoctor(id=${hospital})}">
+    <button>
+        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> Add doctor
+    </button>
+</a>
+    <a th:href="@{/getAllHospital}">
+        <button>Go Back</button>
+    </a>
+</td></div>
+
+
+
+</body>
+</html>

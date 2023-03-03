@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        table {
+            border: 1px solid #ccc;
+            border-collapse: collapse;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        table caption {
+            font-size: 1.5em;
+            margin: .5em 0 .75em;
+        }
+
+        table tr {
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            padding: .35em;
+        }
+
+        table th,
+        table td {
+            padding: .625em;
+            text-align: center;
+        }
+
+        table th {
+            font-size: .85em;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+        }
+
+        @media screen and (max-width: 600px) {
+            table {
+                border: 0;
+            }
+
+            table caption {
+                font-size: 1.3em;
+            }
+
+            table thead {
+                border: none;
+                clip: rect(0 0 0 0);
+                height: 1px;
+                margin: -1px;
+                overflow: hidden;
+                padding: 0;
+                position: absolute;
+                width: 1px;
+            }
+
+            table tr {
+                border-bottom: 3px solid #ddd;
+                display: block;
+                margin-bottom: .625em;
+            }
+
+            table td {
+                border-bottom: 1px solid #ddd;
+                display: block;
+                font-size: .8em;
+                text-align: right;
+            }
+
+            table td::before {
+                /*
+                * aria-label has no advantage, it won't be read inside a table
+                content: attr(aria-label);
+                */
+                content: attr(data-label);
+                float: left;
+                font-weight: bold;
+                text-transform: uppercase;
+            }
+
+            table td:last-child {
+                border-bottom: 0;
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /* general styling */
+        body {
+            font-family: "Open Sans", sans-serif;
+            line-height: 1.25;
+        }
+    </style>
+</head>
+<body>
+<table >
+    <caption>Appointments</caption>
+    <thead>
+    <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Date</th>
+        <th scope="col">Department</th>
+        <th scope="col">Doctor</th>
+        <th scope="col">Patient</th>
+        <th scope="col">Update</th>
+        <th scope="col">Delete</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="appoinment:${appointments}">
+        <td th:text="${appoinment.id}">Id</td>
+        <td th:text="${appoinment.data}">Date</td>
+        <td>
+            <form th:method="POST"
+                  th:action="@{/appointments/{hospitalId}/{appointmentId}/assignDepartmentToAppointment(appointmentId=${appoinment.getId()},hospitalId=${hospital})}">
+                <select name="instructor" class="form-select form-select-sm" aria-label=".form-select-sm example"
+                        th:object="${department}" th:field="*{id}">
+                    <option th:each="department:${departments}"
+                            th:value="${department.id}"
+                            th:text="${department.name}"></option>
+                </select>
+                <input type="submit" value="submit"/>
+            </form>
+        </td>
+        <td>
+            <form th:method="POST"
+                  th:action="@{/appointments/{hospitalId}/{appointmentId}/assignDoctor(appointmentId=${appoinment.getId()},hospitalId=${hospital})}">
+                <select name="instructor" class="form-select form-select-sm" aria-label=".form-select-sm example"
+                        th:object="${doctor}" th:field="*{id}">
+                    <option th:each="doctor:${doctors}"
+                            th:value="${doctor.id}"
+                            th:text="${doctor.firstName}"></option>
+                </select>
+                <input type="submit" value="submit"/>
+            </form>
+        </td>
+        <td>
+            <form th:method="POST"
+                  th:action="@{/appointments/{hospitalId}/{appointmentId}/assignPatient(appointmentId=${appoinment.getId()},hospitalId=${hospital})}">
+                <select name="instructor" class="form-select form-select-sm" aria-label=".form-select-sm example"
+                        th:object="${patient}" th:field="*{id}">
+                    <option th:each="patient:${patients}"
+                            th:value="${patient.id}"
+                            th:text="${patient.firstName}"></option>
+                </select>
+                <input type="submit" value="submit"/>
+            </form>
+        </td>
+
+
+        <div><td> <a th:method="DELETE" th:href="@{/appointments/updateAppointment/{hospitalId}/{id}(id=${appoinment.id},hospitalId=${hospital})}">
+            <button>Update</button>
+        </a>
+        </div>
+
+        <div><td> <a th:method="DELETE" th:href="@{/appointments/{hospitalId}/{id}/deleteAppointment(id=${appoinment.getId()},hospitalId=${hospital})}">
+            <button>Delete</button>
+        </a>
+        </div>
+    </tr>
+
+    </tbody>
+</table>
+</section>
+    <div style="text-align:-webkit-center" ><td> <a th:method="Add" th:href="@{/appointments/{id}/addAppointment(id=${hospital})}">
+        <button>Add</button>
+    </a>
+
+        <td><a th:href="@{/getAllHospital}">
+            <button>Go Back</button>
+        </a>
+        </td>
+
+    </div>
+
+</body>
+</html>
